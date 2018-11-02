@@ -4,6 +4,13 @@ import sys
 import getopt
 import socket
 import struct
+def hostToPort(value):
+    if value.isdigit():
+        port = socket.htons(long(value))
+        print '[port]:%s' %port
+    else:
+        print 'The host value must be number'  
+
 def hostToIp(value):
     if value.isdigit():
         network_value = socket.htonl(long(value))
@@ -23,19 +30,20 @@ def networkToIp(value):
         print 'The network value must be number' 
 
 def usage():
-    print 'hntoa.py usage:'
+    print 'hnswitch.py usage:'
     print '-h,--help: show help message.'
     print '-v, --version: show script version.'
     print '-H,--host: input an host order value.'
     print '-N, --network: input an network order value.'
+    print '-P, --port: input an host order port value.'
 
 def version():
-    print 'hntoa.py 1.0'
+    print 'hnswitch.py 1.0'
 def outPut(args):
     print 'Hello, %s'%args
 def main(argv):
     try:
-        opts, args = getopt.getopt(argv[1:], 'H:N:hv', ['host=','version','help','network='])
+            opts, args = getopt.getopt(argv[1:], 'H:N:P:hv', ['host=','version','help','network=','port='])
     except getopt.GetoptError, err:
         print str(err)
         usage()
@@ -54,6 +62,11 @@ def main(argv):
         elif o in ('-N', '--network'):
             print '[network order value]:%s' %a
             networkToIp(a)
+            sys.exit(0)
+
+        elif o in ('-P', '--port'):
+            print '[host order value]:%s' %a
+            hostToPort(a)
             sys.exit(0)
 
         else:
